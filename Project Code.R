@@ -92,3 +92,18 @@ edudata3$citizenlabel[edudata3$CTZUSIN==1] <- "Citizen"
 
 barplot(table(edudata3$citizenlabel), main = "Citizenship Status of Graduate Students", xlab = "Citizenship Status", ylab = "Frequency")
 
+#Analyzing statistics of Age
+
+mean(edudata3$AGE)
+median(edudata3$AGE)
+sd(edudata3$AGE)
+variance_age <- sd(edudata3$AGE)*sd(edudata3$AGE)
+variance_age
+
+#Analyzing statistics of Salary
+
+mean(edudata3$SALARY)
+median(edudata3$SALARY)
+sd(edudata3$SALARY)
+variance_salary <- sd(edudata3$SALARY)*sd(edudata3$SALARY)
+variance_salary

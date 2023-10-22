@@ -107,3 +107,65 @@ median(edudata3$SALARY)
 sd(edudata3$SALARY)
 variance_salary <- sd(edudata3$SALARY)*sd(edudata3$SALARY)
 variance_salary
+
+#Evaluation of linear correlation of Age and Salary
+
+plot(SALARY~AGE, data = edudata3, xlab = "Age", ylab = "Annual Salary (Thousands of USD)", main = "Annual Salary by Age of Graduate Students", col="gray")
+abline(v=mean(edudata3$AGE), col="blue")
+abline(h=mean(edudata3$SALARY), col="blue")
+
+abline(a=mean(edudata3$SALARY)-1.5*mean(edudata3$AGE), b=1.5, col= "red")
+abline(a=mean(edudata3$SALARY)+1.5*mean(edudata3$AGE), b=-1.5, col= "red")
+
+cor(edudata3$AGE,edudata3$SALARY)
+
+#Creating subsets of edudata3 by type of degree
+
+bachelors  <- subset(edudata3, DGRDG==1)
+masters    <- subset(edudata3, DGRDG==2)
+doctorates <- subset(edudata3, DGRDG==3)
+profcert   <- subset(edudata3, DGRDG==4)
+
+#Evaluating linear correlation of Age and Salary for bachelors
+
+plot(SALARY~AGE, data = bachelors, xlab = "Age", ylab = "Annual Salary (Thousands of USD)", main = "Annual Salary by Age", col="gray")
+abline(v=mean(bachelors$AGE), col="blue")
+abline(h=mean(bachelors$SALARY), col="blue")
+
+abline(a=mean(bachelors$SALARY)-1.5*mean(bachelors$AGE), b=1.5, col= "red")
+abline(a=mean(bachelors$SALARY)+1.5*mean(bachelors$AGE), b=-1.5, col= "red")
+
+cor(bachelors$AGE,bachelors$SALARY)
+
+#Evaluating linear correlation of Age and Salary for masters
+
+plot(SALARY~AGE, data = masters, xlab = "Age", ylab = "Annual Salary (Thousands of USD)", main = "Annual Salary by Age", col="gray")
+abline(v=mean(masters$AGE), col="blue")
+abline(h=mean(masters$SALARY), col="blue")
+
+abline(a=mean(masters$SALARY)-1.5*mean(masters$AGE), b=1.5, col= "red")
+abline(a=mean(masters$SALARY)+1.5*mean(masters$AGE), b=-1.5, col= "red")
+
+cor(masters$AGE,masters$SALARY)
+
+#Evaluating linear correlation of Age and Salary for doctorates
+
+plot(SALARY~AGE, data = doctorates, xlab = "Age", ylab = "Annual Salary (Thousands of USD)", main = "Annual Salary by Age", col="gray")
+abline(v=mean(doctorates$AGE), col="blue")
+abline(h=mean(doctorates$SALARY), col="blue")
+
+abline(a=mean(doctorates$SALARY)-1.5*mean(doctorates$AGE), b=1.5, col= "red")
+abline(a=mean(doctorates$SALARY)+1.5*mean(doctorates$AGE), b=-1.5, col= "red")
+
+cor(doctorates$AGE,doctorates$SALARY)
+
+#Evaluating linear correlation of Age and Salary for professional certificates
+
+plot(SALARY~AGE, data = profcert, xlab = "Age", ylab = "Annual Salary (Thousands of USD)", main = "Annual Salary by Age", col="gray")
+abline(v=mean(profcert$AGE), col="blue")
+abline(h=mean(profcert$SALARY), col="blue")
+
+abline(a=mean(profcert$SALARY)-1.5*mean(profcert$AGE), b=1.5, col= "red")
+abline(a=mean(profcert$SALARY)+1.5*mean(profcert$AGE), b=-1.5, col= "red")
+
+cor(profcert$AGE,profcert$SALARY)

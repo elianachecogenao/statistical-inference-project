@@ -169,3 +169,31 @@ abline(a=mean(profcert$SALARY)-1.5*mean(profcert$AGE), b=1.5, col= "red")
 abline(a=mean(profcert$SALARY)+1.5*mean(profcert$AGE), b=-1.5, col= "red")
 
 cor(profcert$AGE,profcert$SALARY)
+
+#95% Confidence Interval of Mean Age
+
+minmeanage <- mean(edudata3$AGE)+qnorm(0.05/2)*sd(edudata3$AGE)
+maxmeanage <- mean(edudata3$AGE)-qnorm(0.05/2)*sd(edudata3$AGE)
+minmeanage
+maxmeanage
+
+#95% Confidence Interval of Mean Salary
+
+minmeansalary <- mean(edudata3$SALARY)+qnorm(0.05/2)*sd(edudata3$SALARY)
+maxmeansalary <- mean(edudata3$SALARY)-qnorm(0.05/2)*sd(edudata3$SALARY)
+minmeansalary
+maxmeansalary
+
+#Graph of confidence interval Mean Age
+
+hist(edudata3$AGE, xlim= c(15,85), main = "Age of Graduate Students", xlab =  "Age" )
+abline(v= mean(edudata3$AGE), col="red", lwd= 3)
+abline(v= minmeanage, col = "blue", lwd=3)
+abline(v= maxmeanage, col = "blue", lwd=3)
+
+#Graph of confidence interval Mean Salary 
+
+hist(edudata3$SALARY, xlim = c(-10,160),main = "Annual Salary of Graduate Students", xlab = "Annual Salary (USD$1,000)")
+abline(v= mean(edudata3$SALARY), col="red", lwd= 3)
+abline(v= minmeansalary, col = "blue", lwd=3)
+abline(v= maxmeansalary, col = "blue", lwd=3)

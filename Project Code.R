@@ -197,3 +197,46 @@ hist(edudata3$SALARY, xlim = c(-10,160),main = "Annual Salary of Graduate Studen
 abline(v= mean(edudata3$SALARY), col="red", lwd= 3)
 abline(v= minmeansalary, col = "blue", lwd=3)
 abline(v= maxmeansalary, col = "blue", lwd=3)
+
+#I'm creaing a linear regression for salary. In order to do so, I'll subset the dataframe for only people who are employed
+#Also taking out observations with logical skip for job satisfaction
+
+edudata4 <- subset(edudata3, LFSTAT == 1)
+edudata5 <- subset(edudata4, JOBSATIS != 98)
+
+#Creating dummy variable for gender
+#Notice Gender = 1 when female, and = 2 when male
+
+edudata5$male <- edudata5$GENDER - 1
+
+#Creating dummy variable for highest degree earned (combining masters and phd)
+
+edudata5$graduate[edudata5$DGRDG >=2] <- 1
+edudata5$graduate[edudata5$DGRDG <2] <- 0
+
+#Creating dummy variables for race
+
+edudata5$minority[edudata5$RACETH==3] <- 1
+edudata5$minority[edudata5$RACETH!=3] <- 0
+
+#Creating dummy variables for job satisfaction
+#1 = very satisfied, 2= somewhat satisfied, 3= somewhat dissatisfied, 4= very dissatisfied
+
+edudata5$satisfied[edudata5$JOBSATIS <= 2] <- 1
+edudata5$satisfied[edudata5$JOBSATIS  > 2] <- 0
+
+#creating linear regression
+
+linearmodel <- lm(SALARY~AGE+male+CTZUSIN+graduate+minority+satisfied , data = edudata5)
+summary(linearmodel)
+
+linearmodel2 <- lm(SALARY~AGE+male+graduate+minority+satisfied , data = edudata5)
+summary(linearmodel2)
+
+#Graph residuals
+
+hist(linearmodel$residuals, main="Linear Model Residuals", xlab = "Residuals")
+
+plot(linearmodel$residuals~edudata5$SALARY, main="Salary vs. Residuals", xlab="Salary (USD$1000)", ylab = "Residuals", col="gray")
+
+cor(edudata5$SALARY,linearmodel$residuals)

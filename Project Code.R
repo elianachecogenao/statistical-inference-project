@@ -240,3 +240,61 @@ hist(linearmodel$residuals, main="Linear Model Residuals", xlab = "Residuals")
 plot(linearmodel$residuals~edudata5$SALARY, main="Salary vs. Residuals", xlab="Salary (USD$1000)", ylab = "Residuals", col="gray")
 
 cor(edudata5$SALARY,linearmodel$residuals)
+
+#Hypothesis testing
+
+#Claim 1: The mean salary for women and men is different
+
+#Creating subsets for men and women (using dummy variables from previous analysis)
+
+mendata   <- subset(edudata5, male==1)
+womendata <- subset(edudata5, male==0)
+
+mendata_size   <- nrow(mendata)
+womendata_size <- nrow(womendata)
+
+mendata_mean   <- mean(mendata$SALARY)
+womendata_mean <- mean(womendata$SALARY)
+
+mendata_sd   <- sd(mendata$SALARY)
+womendata_sd <- sd(womendata$SALARY)
+
+#Assuming the population standard deviation for men and women's salary is different:
+
+df1 <- ((mendata_sd^2)/mendata_size + (womendata_sd^2)/womendata_size)/(((mendata_sd^2)/mendata_size)/(mendata_size-1) + ((womendata_sd^2)/womendata_size)/(womendata_size-1))
+test_statistic1 <- (mendata_mean - womendata_mean)/sqrt((mendata_sd^2)/mendata_size + (womendata_sd^2)/womendata_size)
+
+#P-value
+
+2*(1-pt(test_statistic1,df1))
+
+#Claim 2: the proportion of men and women who graduated with a bachelor degree is the same (0.5)
+
+#Creating subset of bachelor degree
+
+bachelordegree <- subset(edudata5, DGRDG==1)
+bachelordegree_size <- nrow(bachelordegree)
+
+proportion_women <- nrow(subset(bachelordegree,GENDER==1))/bachelordegree_size
+
+test_statistic2 <- (proportion_women - 0.5)/sqrt((0.5*(1 - 0.5))/bachelordegree_size)
+
+#P-value
+
+2*pnorm(test_statistic2)
+
+#Claim 3: Race has no influence in salaries (mean salary is equal for all races)
+
+edudata5$race[edudata5$RACETH== 2] <- "White"
+edudata5$race[edudata5$RACETH== 1] <- "Asian"
+edudata5$race[edudata5$RACETH== 3] <- "Minorities"
+
+salaries <-data.frame(edudata5$race, edudata5$SALARY)
+View(salaries)
+
+library(plyr)
+salaries <- rename(salaries, c("edudata5.race" = "Race", "edudata5.SALARY" = "Salary"))
+
+#ANOVA
+salaries_aov = aov(Salary ~ Race, data = salaries)
+summary(salaries_aov)

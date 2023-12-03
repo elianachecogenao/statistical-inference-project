@@ -243,7 +243,7 @@ cor(edudata5$SALARY,linearmodel$residuals)
 
 #Hypothesis testing
 
-#Claim 1: The mean salary for women and men is different
+#Claim 1: The mean salary for women is less than the mean salary for men
 
 #Creating subsets for men and women (using dummy variables from previous analysis)
 
@@ -262,11 +262,11 @@ womendata_sd <- sd(womendata$SALARY)
 #Assuming the population standard deviation for men and women's salary is different:
 
 df1 <- ((mendata_sd^2)/mendata_size + (womendata_sd^2)/womendata_size)/(((mendata_sd^2)/mendata_size)/(mendata_size-1) + ((womendata_sd^2)/womendata_size)/(womendata_size-1))
-test_statistic1 <- (mendata_mean - womendata_mean)/sqrt((mendata_sd^2)/mendata_size + (womendata_sd^2)/womendata_size)
+test_statistic1 <- (womendata_mean -  mendata_mean)/sqrt((mendata_sd^2)/mendata_size + (womendata_sd^2)/womendata_size)
 
 #P-value
 
-2*(1-pt(test_statistic1,df1))
+pt(test_statistic1,df1)
 
 #Claim 2: the proportion of men and women who graduated with a bachelor degree is the same (0.5)
 
@@ -275,19 +275,31 @@ test_statistic1 <- (mendata_mean - womendata_mean)/sqrt((mendata_sd^2)/mendata_s
 bachelordegree <- subset(edudata5, DGRDG==1)
 bachelordegree_size <- nrow(bachelordegree)
 
-proportion_women <- nrow(subset(bachelordegree,GENDER==1))/bachelordegree_size
+proportion_women <- nrow(subset(bachelordegree,male==0))/bachelordegree_size
 
 test_statistic2 <- (proportion_women - 0.5)/sqrt((0.5*(1 - 0.5))/bachelordegree_size)
 
 #P-value
 
-2*pnorm(test_statistic2)
+pnorm(test_statistic2)
 
 #Claim 3: Race has no influence in salaries (mean salary is equal for all races)
 
 edudata5$race[edudata5$RACETH== 2] <- "White"
 edudata5$race[edudata5$RACETH== 1] <- "Asian"
 edudata5$race[edudata5$RACETH== 3] <- "Minorities"
+
+#Descriptive statistics
+
+asian_mean       <-mean(subset(edudata5, RACETH==1)$SALARY)
+white_mean       <-mean(subset(edudata5, RACETH==2)$SALARY)
+minorities_mean  <-mean(subset(edudata5, RACETH==3)$SALARY)
+
+asian_size      <- nrow(subset(edudata5, RACETH==1))
+white_size      <- nrow(subset(edudata5, RACETH==2))
+minorities_size <- nrow(subset(edudata5, RACETH==3))
+
+#Creating mx2 (categories and data) dataset for ANOVA
 
 salaries <-data.frame(edudata5$race, edudata5$SALARY)
 View(salaries)
